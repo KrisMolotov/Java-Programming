@@ -1,145 +1,184 @@
 package Lab1;
 
-public class List
+public class List<Object>
 {
-    private int[] list;
+    public Node<Object> list; // поля класса
     private int size;
 
-    public List()
+
+    static class Node<Object>
     {
-        this.size = 0;
-        this.list = new int[32]; // или любая степень двойки
+        Object data;
+        Node<Object> next;
+
+        public Node(Object data) // инициализирующий конструктор
+        {
+            this.data = data;
+            this.next = null;
+        }
+
     }
 
-    public void Add1(int a) // добавление элемента по значению
+    public boolean IsEmpty()
     {
-        if (this.size < this.list.length - 1)
+        return this.size == 0;
+    }
+    public List() // пустой конструктор
+    {
+        this.size = 0;
+        this.list = null;
+    }
+
+
+    public void Add1(Object data) // добавление элемента по значению
+    {
+        Node<Object> element = new Node<>(data);
+        element.next = null;
+        if (this.list == null)
         {
-            this.list[size] = a;
-            ++this.size;
+            this.list = element;
         }
         else
         {
-            int[] tempList = copyForAdd(this.list, this.size + 1);
-            tempList[this.size++] = a;
-            this.list = tempList;
+            Node<Object> temp = this.list;
+            while (temp.next != null)
+            {
+                temp = temp.next;
+            }
+            temp.next = element;
+        }
+        this.size++;
+    }
+
+    public void Add2(int ind, Object data) // // добавление элемента по индексу и значению
+    {
+        if (ind > 0 && ind <= this.size)
+        {
+            Node<Object> temp = this.list;
+            for (int i = 0; i < ind; ++i)
+            {
+                temp = temp.next;
+            }
+            Node<Object> element = new Node<>(data);
+            element.next = temp.next;
+            temp.next = element;
+        }
+        else if(ind == 0)
+        {
+            Node<Object> temp = this.list;
+            Node<Object> element = new Node<>(data);
+            element.next = temp.next;
+            temp = element;
+        }
+        else if(ind > this.size)
+        {
+            int j = 0;
+            Node<Object> temp = this.list;
+            while (temp.next != null)
+            {
+                temp = temp.next;
+                ++j;
+            }
+            for(int i = j; i < ind; ++i)
+            {
+                temp.next = new Node<>(null);
+                temp = temp.next;
+                this.size++;
+            }
+            temp = new Node<>(data);
         }
     }
 
-    public void Add2(int ind, int a) // добавление элемента по индексу и значению
+    public void Remove(int ind)
     {
-        if(ind > 0 && ind < this.list.length)
+        if (this.size > 0)
         {
-            this.list = copyForAddInd(this.list, ind, a, this.size + 1);
-            ++this.size;
+            if (ind == 0)
+            {
+                this.list = this.list.next;
+            } else if(ind > 0 && ind <= this.size)
+            {
+                Node<Object> temp = this.list;
+                for (int i = 1; i <= ind; ++i)
+                {
+                    temp = temp.next;
+                }
+                temp = temp.next;
+            }
         }
     }
 
-    public void Remove(int ind) // удаление элемента
+    public Object Get1(int ind) // поиск объекта по индексу
     {
-        if(ind > 0 && ind < this.list.length)
+        int i =1;
+        if(ind > 0 && ind <= this.size)
         {
-            this.list = copyForRem(this.list, ind, this.size - 1);
+            Node<Object> temp = this.list;
+            while(i != ind)
+            {
+                temp = temp.next;
+                ++i;
+            }
+            return temp.data;
         }
-    }
-    private static int[] copyForRem(int[] list, int ind, int NewSize) // вспомогательная функция для переопределения массива с учетом удаленного элемента
-    {
-        int[] tempList = new int[NewSize];
-        int i = 0;
-        for (i = 0; i < ind; ++i)
-        {
-            tempList[i] = list[i];
-        }
-        tempList[ind] = list[i+1];
-        i += 2;
-        for (; i < list.length; ++i)
-        {
-            tempList[i-1] = list[i];
-        }
-        return tempList;
+        return null;
     }
 
-    private static int[] copyForAddInd(int[] list, int ind, int a, int NewSize) // вспомогательная функция для переопределения массива с учетом добавленного элемента
+    public int IndexOf(Object data) //// поиск индекса по значению
     {
-        int[] tempList = new int[NewSize];
-        int i = 0;
-        for (i = 0; i < ind; ++i)
+        Node<Object> temp = this.list;
+        for (int i = 1; i <= this.size; i++)
         {
-            tempList[i] = list[i];
-        }
-        tempList[ind] = a;
-        for (; i < list.length; ++i)
-        {
-            tempList[i + 1] = list[i];
-        }
-        return tempList;
-    }
-
-    private static int[] copyForAdd(int[] list, int NewSize) // вспомогательная функция для переопределения массива с учетом добавленного элемента
-    {
-        int[] tempList = new int[NewSize];
-        for (int i : list)
-        {
-            tempList[i] = list[i];
-        }
-        return tempList;
-    }
-
-    public List Get1(int ind) // поиск объекта по индексу
-    {
-        List obj = new List();
-        if (ind < this.size)
-        {
-            obj.Add1(this.list[ind]);
-        }
-        return obj;
-    }
-
-    public int IndexOf(int value) // поиск индекса по значению
-    {
-        for (int i = 0; i < this.size; ++i)
-        {
-            if (this.list[i] == value)
+            if (temp.data == data)
             {
                 return i;
             }
+            temp = temp.next;
         }
         return -1;
     }
 
-    public boolean IsContains(int value) // проверка на присутствие элемента в списке
+    public boolean IsContains(Object value) // проверка на присутствие элемента в списке
     {
-        for (int i = 0; i < this.size; ++i)
+        Node<Object> temp = this.list;
+        for (int i = 1; i <= this.size; ++i)
         {
-            if (this.list[i] == value)
+            if (temp.data == value)
             {
                 return true;
             }
+            temp = temp.next;
         }
         return false;
     }
 
-    public List Get2(int ind, int value) // поиск объекта по индексу и значению
+    public Object Get2(int ind, Object value) // поиск объекта по индексу и значению
     {
-        List obj = new List();
-        if (ind < this.size && this.list[ind] == value)
+        int i = 1;
+        if(ind > 0 && ind <= this.size)
         {
-            obj.Add1(value);
+            Node<Object> temp = this.list;
+            while(i != ind && temp.data != value)// Equals метод для сравнения объектов
+            {
+                temp = temp.next;
+                ++i;
+            }
+            return temp.data;
         }
-        return obj;
+        return null;
     }
-
     public int SizeOfList() // получение текущего размера массива
     {
         return this.size;
     }
 
-    public boolean isEmpty() // проверка на пустоту массива
+    public void print()
     {
-        if (this.size == 0)
+        Node<Object> temp = this.list;
+        while (temp != null)
         {
-            return true;
+            System.out.print(temp.data + " ");
+            temp = temp.next;
         }
-        return false;
     }
 }
