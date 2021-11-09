@@ -25,7 +25,7 @@ public class List_Of_Int
     }
 
 
-    public void Add1(int data) // добавление элемента по значению
+    public void add1(int data) // добавление элемента по значению
     {
         Node element = new Node(data);
         element.next = null;
@@ -44,7 +44,7 @@ public class List_Of_Int
         this.size++;
     }
 
-    public void Add2(int ind, int data) // // добавление элемента по индексу и значению
+    public void add2(int ind, int data) // // добавление элемента по индексу и значению
     {
         if (ind > 0 && ind <= this.size)
         {
@@ -80,7 +80,7 @@ public class List_Of_Int
         }
     }
 
-    public void Remove(int ind)
+    public void remove(int ind)
     {
         if (this.size > 0)
         {
@@ -106,7 +106,7 @@ public class List_Of_Int
         return this.size == 0;
     }
 
-    public Object Get1(int ind) // поиск объекта по индексу
+    public Object get1(int ind) // поиск объекта по индексу
     {
         int i = 1;
         if (ind > 0 && ind <= this.size)
@@ -122,7 +122,7 @@ public class List_Of_Int
         return null;
     }
 
-    public int IndexOf(int data) //// поиск индекса по значению
+    public int indexOf(int data) //// поиск индекса по значению
     {
         Node temp = this.list;
         for (int i = 1; i <= this.size; i++)
@@ -136,7 +136,7 @@ public class List_Of_Int
         return -1;
     }
 
-    public boolean IsContains(int value) // проверка на присутствие элемента в списке
+    public boolean isContains(int value) // проверка на присутствие элемента в списке
     {
         Node temp = this.list;
         for (int i = 1; i <= this.size; ++i)
@@ -149,7 +149,7 @@ public class List_Of_Int
         return false;
     }
 
-    public Object Get2(int ind, int value) // поиск объекта по индексу и значению
+    public Object get2(int ind, int value) // поиск объекта по индексу и значению
     {
         int i = 1;
         if (ind > 0 && ind <= this.size) {
@@ -164,7 +164,7 @@ public class List_Of_Int
         return null;
     }
 
-    public int SizeOfList() // получение текущего размера массива
+    public int sizeOfList() // получение текущего размера массива
     {
         return this.size;
     }
@@ -178,7 +178,7 @@ public class List_Of_Int
         }
     }
 
-    public List_Of_Int Merge(Node head1, Node head2) {
+    public List_Of_Int merge(Node head1, Node head2) {
         if (head1 == null && head2 == null) {
             System.out.println("Lists are empty");
             return null;
@@ -190,11 +190,11 @@ public class List_Of_Int
             {
                 if (temp1.data <= temp2.data)
                 {
-                    NewList.Add1(temp1.data);
+                    NewList.add1(temp1.data);
                     temp1 = temp1.next;
                 } else
                 {
-                    NewList.Add1(temp2.data);
+                    NewList.add1(temp2.data);
                     temp2 = temp2.next;
                 }
             }
@@ -202,14 +202,14 @@ public class List_Of_Int
             {
                 while (temp1 != null)
                 {
-                    NewList.Add1(temp1.data);
+                    NewList.add1(temp1.data);
                     temp1 = temp1.next;
                 }
             } else
             {
                 while (temp2 != null)
                 {
-                    NewList.Add1(temp2.data);
+                    NewList.add1(temp2.data);
                     temp2 = temp2.next;
                 }
             }

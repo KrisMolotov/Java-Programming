@@ -1,184 +1,158 @@
 package Lab1;
 
-public class List<Object>
+public class List
 {
-    public Node<Object> list; // поля класса
+    //поля класса
     private int size;
+    public Node head;
 
-
-    static class Node<Object>
-    {
-        Object data;
-        Node<Object> next;
-
-        public Node(Object data) // инициализирующий конструктор
-        {
-            this.data = data;
-            this.next = null;
-        }
-
-    }
-
-    public boolean IsEmpty()
-    {
-        return this.size == 0;
-    }
-    public List() // пустой конструктор
+    //пустой конструктор
+    public List()
     {
         this.size = 0;
-        this.list = null;
+        this.head = null;
     }
 
-
-    public void Add1(Object data) // добавление элемента по значению
+    //инициализирующий конструктор
+    public List(int size)
     {
-        Node<Object> element = new Node<>(data);
-        element.next = null;
-        if (this.list == null)
+        if (size > 0) {
+            Node newNode = new Node();
+            this.head = newNode;
+            Node tmp = this.head;
+            for (int i = 1; i < size; ++i)
+            {
+                newNode = new Node();
+                tmp.next = newNode;
+                tmp = tmp.next;
+            }
+            this.size = size;
+        }
+        else {
+            this.size = 0;
+            this.head = null;
+        }
+    }
+
+    public void add(Object data)
+    {
+        if (this.size == 0) {
+            this.head = new Node(data);
+        }
+        else {
+            Node tmp = this.head;
+            for (int i = 0; i < this.size - 1; ++i)
+            {
+                tmp = tmp.next;
+            }
+            tmp.next = new Node(data);
+        }
+        ++this.size;
+    }
+
+    public void remove(int index) {
+        // index from 0 to this.size - 1
+        if (index < 0 || this.size == 0 || this.size <= index)
         {
-            this.list = element;
+            return;
         }
         else
         {
-            Node<Object> temp = this.list;
-            while (temp.next != null)
-            {
-                temp = temp.next;
+            if (index == 0)
+                this.head = this.head.next;
+            else {
+                Node tmp = this.head;
+                for (int i = 0; i < index - 1; ++i)
+                    tmp = tmp.next;
+                Node tmp2 = tmp.next;
+                tmp.next = tmp2.next;
             }
-            temp.next = element;
         }
-        this.size++;
+        --this.size;
     }
 
-    public void Add2(int ind, Object data) // // добавление элемента по индексу и значению
+    public Node get(int index)
     {
-        if (ind > 0 && ind <= this.size)
+        if (index < 0 || this.size == 0 || this.size <= index)
+            return null;
+        else
         {
-            Node<Object> temp = this.list;
-            for (int i = 0; i < ind; ++i)
-            {
-                temp = temp.next;
-            }
-            Node<Object> element = new Node<>(data);
-            element.next = temp.next;
-            temp.next = element;
-        }
-        else if(ind == 0)
-        {
-            Node<Object> temp = this.list;
-            Node<Object> element = new Node<>(data);
-            element.next = temp.next;
-            temp = element;
-        }
-        else if(ind > this.size)
-        {
-            int j = 0;
-            Node<Object> temp = this.list;
-            while (temp.next != null)
-            {
-                temp = temp.next;
-                ++j;
-            }
-            for(int i = j; i < ind; ++i)
-            {
-                temp.next = new Node<>(null);
-                temp = temp.next;
-                this.size++;
-            }
-            temp = new Node<>(data);
+            Node tmp = this.head;
+            for (int i = 0; i < index; ++i)
+                tmp = tmp.next;
+            return tmp;
         }
     }
 
-    public void Remove(int ind)
+    public Node get(int index, Object data)
     {
-        if (this.size > 0)
+        if (index < 0 || this.size == 0 || this.size <= index)
+            return null;
+        else
         {
-            if (ind == 0)
-            {
-                this.list = this.list.next;
-            } else if(ind > 0 && ind <= this.size)
-            {
-                Node<Object> temp = this.list;
-                for (int i = 1; i <= ind; ++i)
-                {
-                    temp = temp.next;
-                }
-                temp = temp.next;
-            }
+            Node tmp = this.head;
+            for (int i = 0; i < index; ++i)
+                tmp = tmp.next;
+            if (data.equals(tmp.data))
+                return tmp;
+            else
+                return null;
         }
     }
 
-    public Object Get1(int ind) // поиск объекта по индексу
+    public int indexOf(Object data)
     {
-        int i =1;
-        if(ind > 0 && ind <= this.size)
-        {
-            Node<Object> temp = this.list;
-            while(i != ind)
+        if (this.size != 0) {
+            Node tmp = this.head;
+            for (int i = 0; i < this.size; ++i)
             {
-                temp = temp.next;
-                ++i;
+                if (data.equals(tmp.data))
+                    return i;
+                tmp = tmp.next;
             }
-            return temp.data;
-        }
-        return null;
-    }
-
-    public int IndexOf(Object data) //// поиск индекса по значению
-    {
-        Node<Object> temp = this.list;
-        for (int i = 1; i <= this.size; i++)
-        {
-            if (temp.data == data)
-            {
-                return i;
-            }
-            temp = temp.next;
         }
         return -1;
     }
 
-    public boolean IsContains(Object value) // проверка на присутствие элемента в списке
+    public boolean contains(Object data)
     {
-        Node<Object> temp = this.list;
-        for (int i = 1; i <= this.size; ++i)
+        Node tmp = this.head;
+        for (int i = 0; i < this.size; ++i)
         {
-            if (temp.data == value)
-            {
+            if (data.equals(tmp.data))
                 return true;
-            }
-            temp = temp.next;
+            tmp = tmp.next;
         }
         return false;
     }
 
-    public Object Get2(int ind, Object value) // поиск объекта по индексу и значению
-    {
-        int i = 1;
-        if(ind > 0 && ind <= this.size)
-        {
-            Node<Object> temp = this.list;
-            while(i != ind && temp.data != value)// Equals метод для сравнения объектов
-            {
-                temp = temp.next;
-                ++i;
-            }
-            return temp.data;
-        }
-        return null;
-    }
-    public int SizeOfList() // получение текущего размера массива
+    public int size()
     {
         return this.size;
     }
 
-    public void print()
+    public boolean isEmpty()
     {
-        Node<Object> temp = this.list;
-        while (temp != null)
-        {
-            System.out.print(temp.data + " ");
-            temp = temp.next;
-        }
+        return this.size == 0;
     }
+
+    public void printList() {
+        if (size > 0)
+        {
+            Node tmp = this.head;
+            System.out.print("List is: ");
+            while (tmp != null)
+            {
+                if (tmp.next == null)
+                    System.out.print(tmp.data);
+                else
+                    System.out.print(tmp.data + ", ");
+                tmp = tmp.next;
+            }
+            System.out.print("\n");
+        }
+        else
+            System.out.println("List is empty");
+    }
+
 }

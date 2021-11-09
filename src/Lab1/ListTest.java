@@ -1,32 +1,39 @@
 package Lab1;
 
-public class ListTest
-{
-    public static void main(String[] args)
-    {
-        List<Double> L1 = new List<Double>();
-        L1.Add1(5.0);
-        L1.Add1(3.0);
-        L1.print();
+public class ListTest {
+    public static void main(String[] args) {
+        List List1 = new List(5);
+        List List2 = new List();
 
-        L1.Remove(1);
-        L1.print();
+        List2.add("A");
+        List2.add("B");
 
-        L1.Add2(5, 10.0);
-        L1.print();
-        boolean a = L1.IsEmpty();
-        System.out.println(a);
-        Double b = L1.Get1(1);
-        System.out.println(b);
-        int c = L1.IndexOf(15.0);
-        System.out.println(c);
-        int d = L1.IndexOf(10.0);
-        System.out.println(d);
-        a = L1.IsContains(1.0);
-        System.out.println(a);
+        List2.printList();
+        List2.remove(0);
+        List2.printList();
 
-        d = L1.SizeOfList();
-        System.out.println(d);
+        Node Node1 = List2.get(0);
+        System.out.println(Node1.data);
 
+        List2.add(5);
+        List2.printList();
+        int i1 = List2.indexOf(5);
+        int i2 = List2.indexOf("B");
+        int i3 = List2.indexOf(100);
+        System.out.println(i1 + " " + i2 + " " + i3);
+
+        System.out.println(List2.contains("B") + " " +
+                List2.contains(6));
+
+        Node bNode = List2.get(0, "A");
+        if (bNode != null)
+            System.out.println(bNode.data);
+        else
+            System.out.println("No such node");
+
+
+        System.out.println(List1.size() + " "+ List2.size());
+
+        System.out.println(List1.isEmpty() + " " + List2.isEmpty());
     }
 }
